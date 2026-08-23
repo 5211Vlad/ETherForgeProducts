@@ -1,0 +1,17 @@
+ETHERFORGE R06 — DEPLOY NOW
+
+STATUS
+- Website source complete and link-checked.
+- Existing Netlify project: etherforge-works
+- Free production hostname reserved: https://etherforge-works.netlify.app/
+- This repo is the public source.
+
+FASTEST MANUAL PRODUCTION DEPLOY
+1. Open https://app.netlify.com/projects/etherforge-works
+2. Open Deploys.
+3. Drag the extracted R06 site folder into the manual deploy dropzone on the Deploys page.
+4. Wait for the production deploy to show Ready.
+5. Verify the home hero says: Make the weird useful.
+
+STRIPE
+The currently connected Stripe account is TEST/SANDBOX only. Do not publish its test Payment Links. For production, create one LIVE one-time Product/Price/Payment Link per sellable product and replace the matching url in store-config.js. RowGlass and Thread Junk Remover already point to verified live Gumroad checkouts.
