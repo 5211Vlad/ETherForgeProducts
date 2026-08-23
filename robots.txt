@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://etherforge-works.netlify.app/sitemap.xml
