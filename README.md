@@ -1,40 +1,11 @@
-[README.md](https://github.com/user-attachments/files/26989994/README.md)
-# EtherForge Website Pack
+# EtherForge Website R06
 
-Static starter site for EtherForge.
+Static, dependency-free commercial website for EtherForge LLC.
 
-## Files
-- `index.html`
-- `styles.css`
-- `assets/etherforge-logo.png`
+Primary pages: home, products, individual product pages, projects, proof, about, and privacy.
 
-## Brand direction
-- business name: EtherForge
-- tagline: Good. Honest. Works.
-- tone: practical, clear, trustworthy
-- visual direction: dark forge palette with electric blue highlights
+Live checkout is currently wired only for RowGlass and Thread Junk Remover through their verified Gumroad storefronts. Other finished/built products route to evaluation, pilot, or launch-access email until a verified public checkout is intentionally activated.
 
-## What this site includes
-- hero section
-- product section
-- brand values section
-- contact/footer section
-- featured product block for the real estate lead normalizer
-- dedicated product page: `product-lead-normalizer.html`
-- about and FAQ page: `about.html`
+Hosting target: Netlify Free at `https://etherforge-works.netlify.app/`.
 
-## Before publishing
-Update these items:
-- confirm final Gumroad product links
-- confirm Discord/community link placement
-- review final product names and offers
-- verify the logo file path matches the HTML reference
-- test the live Stripe checkout link end to end before public launch
-
-## How to preview locally
-Open `index.html` in a browser.
-
-## Suggested next steps
-1. add your real product links
-2. add an about page or FAQ
-3. deploy to Netlify, Vercel, or GitHub Pages
+Public research copy is intentionally bounded: GhostOS, MAGI, METRON, Avalon, and embodied-systems work are described at capability/objective level without publishing proprietary implementation details. KLEIO is intentionally excluded from this public release.
