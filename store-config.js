@@ -8,6 +8,7 @@ window.ETHERFORGE_STORE = {
     handoff_forge: {name:"Handoff Forge 2.1 RC1", price:"$29 suggested", url:"mailto:vladbloodbath123@gmail.com?subject=Handoff%20Forge%202.1%20RC1%20launch%20access", status:"launch", cta:"Launch access"},
     product_page_forge: {name:"Product Page Forge 2.1 RC1", price:"$12 suggested", url:"mailto:vladbloodbath123@gmail.com?subject=Product%20Page%20Forge%202.1%20RC1", status:"launch", cta:"Launch access"},
     readme_forge: {name:"README Forge 2.1 RC1", price:"$9 suggested", url:"mailto:vladbloodbath123@gmail.com?subject=README%20Forge%202.1%20RC1", status:"launch", cta:"Launch access"},
-    utility_bundle: {name:"EtherForge Utility Bundle 2.1 RC1", price:"$59 suggested", url:"mailto:vladbloodbath123@gmail.com?subject=EtherForge%20Utility%20Bundle%202.1%20RC1", status:"launch", cta:"Launch access"}
+    utility_bundle: {name:"EtherForge Utility Bundle 2.1 RC1", price:"$59 suggested", url:"mailto:vladbloodbath123@gmail.com?subject=EtherForge%20Utility%20Bundle%202.1%20RC1", status:"launch", cta:"Launch access"},
+    sophia_mobile: {name:"SOPHIA Android + Windows Companion", price:"Android planned · desktop included", url:"sophia-mobile.html", status:"planned", cta:"See mobile plan"}
   }
 };
