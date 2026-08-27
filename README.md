@@ -6,6 +6,24 @@ Live site: https://etherforge-works.netlify.app/
 
 This public repository contains the static, dependency-free EtherForge commercial website. It is intentionally a public-safe surface: products, use cases, proof/status language, and research objectives are visible; proprietary implementation details are not.
 
+## Founder / available for work
+
+**Allen Shemwell — Founder, Product & Systems Builder**
+
+Allen brings 15+ years of production-supervision and operations experience into EtherForge’s software and applied-AI work. The operating pattern is the same: make the failure mode legible, improve the process, document what changed, and prove the result before making a bigger claim.
+
+Open to remote and contract work in:
+
+- technical support and troubleshooting;
+- software implementation and customer onboarding;
+- operations / project coordination;
+- AI / LLM evaluation and QA;
+- CSV cleanup, data validation, and migration support;
+- workflow automation and technical documentation;
+- product QA, release preflight, and practical local-first software work.
+
+Public proof: this repository, the live EtherForge site, and the product/proof pages linked below.
+
 ## Live products
 
 - **RowGlass — Local CSV Change Inspector**  
