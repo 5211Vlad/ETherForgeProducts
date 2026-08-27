@@ -4,6 +4,8 @@
 
 Live site: https://etherforge-works.netlify.app/
 
+Work / services: https://etherforge-works.netlify.app/work.html
+
 This public repository contains the static, dependency-free EtherForge commercial website. It is intentionally a public-safe surface: products, use cases, proof/status language, and research objectives are visible; proprietary implementation details are not.
 
 ## Founder / available for work
@@ -62,6 +64,6 @@ We are especially interested in conversations with:
 
 ## Repository scope
 
-Primary pages include home, products, individual product pages, projects, proof, about, and privacy. Hosting target is Netlify Free. KLEIO remains intentionally excluded from the public release.
+Primary pages include home, products, individual product pages, projects, proof, about, work/services, and privacy. Hosting target is Netlify Free. KLEIO remains intentionally excluded from the public release.
 
 If you are evaluating EtherForge, start with the live site and the product/proof pages rather than treating this repository as the full internal R&D corpus.
