@@ -1,0 +1,50 @@
+name: EtherForge Poly Haven Pine Intake R0
+
+on:
+  push:
+    branches: [ef-cloud-toolchain-r0]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  intake:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Acquire 2K Poly Haven wood_table PBR maps
+        shell: bash
+        run: |
+          set -euxo pipefail
+          mkdir -p intake
+          base=https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/wood_table
+          curl -L --fail --retry 3 -o intake/wood_table_diff_2k.jpg "$base/wood_table_diff_2k.jpg"
+          curl -L --fail --retry 3 -o intake/wood_table_nor_gl_2k.jpg "$base/wood_table_nor_gl_2k.jpg"
+          curl -L --fail --retry 3 -o intake/wood_table_rough_2k.jpg "$base/wood_table_rough_2k.jpg"
+          file intake/*
+          test -s intake/wood_table_diff_2k.jpg
+          test -s intake/wood_table_nor_gl_2k.jpg
+          test -s intake/wood_table_rough_2k.jpg
+
+      - name: Provenance and hashes
+        shell: bash
+        run: |
+          set -euxo pipefail
+          {
+            echo 'asset=Poly Haven Wood Table'
+            echo 'asset_page=https://polyhaven.com/a/wood_table'
+            echo 'author=Dimitrios Savva'
+            echo 'license=CC0'
+            echo 'source_width=1m'
+            echo 'purpose=Dead Silent dimensional-lumber ART_CANDIDATE input'
+            echo 'maps=2K diffuse, OpenGL normal, roughness'
+            sha256sum intake/*
+          } | tee intake/PROVENANCE.txt
+
+      - name: Upload intake artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ef-polyhaven-pine-intake-r0
+          path: intake/
+          retention-days: 7
