@@ -1,4 +1,4 @@
-name: EtherForge Cloud Toolchain R0
+name: EtherForge Cloud Toolchain R1
 
 on:
   push:
@@ -27,7 +27,7 @@ jobs:
           echo 'cadd3204e728a35d3f13adb7fd0d7902636b79f6b95c40c265eb73b6c35329e4  Godot_v4.7.2-stable_linux.x86_64.zip' | sha256sum -c -
           unzip -q Godot_v4.7.2-stable_linux.x86_64.zip
           chmod +x Godot_v4.7.2-stable_linux.x86_64
-          ./Godot_v4.7.2-stable_linux.x86_64 --headless --version | tee godot_version.txt
+          GODOT_SILENCE_ROOT_WARNING=1 ./Godot_v4.7.2-stable_linux.x86_64 --headless --version | tee godot_version.txt
 
       - name: Acquire Blender 5.2.1 LTS
         shell: bash
@@ -41,23 +41,20 @@ jobs:
             https://download.blender.org/release/Blender5.2/blender-5.2.1.sha256
           grep 'blender-5.2.1-linux-x64.tar.xz' blender-5.2.1.sha256 | sha256sum -c -
           tar -xf blender-5.2.1-linux-x64.tar.xz
-          ./.ef_missing 2>/dev/null || true
           ./blender-5.2.1-linux-x64/blender --background --version | tee blender_version.txt
 
       - name: Author measured 2x4 in Blender and export GLB
         shell: bash
         run: |
           set -euxo pipefail
-          mkdir -p smoke
-          cat > smoke/author_2x4.py <<'PY'
+          mkdir -p art_source smoke_project
+          cat > art_source/author_2x4.py <<'PY'
           import bpy
+          import math
           from pathlib import Path
 
-          bpy.ops.object.select_all(action='SELECT')
-          bpy.ops.object.delete(use_global=False)
-
-          # Actual dressed 2x4 x 8 ft: 1.5 in x 3.5 in x 96 in.
-          dims = (0.0381, 2.4384, 0.0889)
+          bpy.ops.wm.read_factory_settings(use_empty=True)
+          dims = (0.0381, 2.4384, 0.0889)  # 1.5 in x 96 in x 3.5 in
           bpy.ops.mesh.primitive_cube_add(size=1.0, location=(0, dims[1] / 2.0, 0))
           obj = bpy.context.active_object
           obj.name = 'DS_LUMBER_2X4X8_A_RENDER'
@@ -70,27 +67,44 @@ jobs:
           bpy.context.view_layer.objects.active = obj
           bpy.ops.object.modifier_apply(modifier=bevel.name)
 
+          bpy.ops.object.mode_set(mode='EDIT')
+          bpy.ops.mesh.select_all(action='SELECT')
+          bpy.ops.uv.smart_project(angle_limit=math.radians(66.0), island_margin=0.02)
+          bpy.ops.object.mode_set(mode='OBJECT')
+
+          mat = bpy.data.materials.new('DS_WOOD_PIPELINE_PROOF')
+          mat.use_nodes = True
+          bsdf = mat.node_tree.nodes.get('Principled BSDF')
+          bsdf.inputs['Base Color'].default_value = (0.43, 0.25, 0.12, 1.0)
+          bsdf.inputs['Roughness'].default_value = 0.62
+          obj.data.materials.append(mat)
+
           obj['ef_asset_id'] = 'DS_LUMBER_2X4X8_A'
           obj['ef_nominal'] = '2x4x8'
           obj['ef_actual_inches'] = '1.5x3.5x96'
           obj['ef_units'] = 'meter'
           obj['ef_status'] = 'GEOMETRY_SMOKE_ONLY_NOT_ART_GREEN'
 
-          out = Path.cwd() / 'smoke' / 'DS_LUMBER_2X4X8_A.glb'
-          bpy.ops.export_scene.gltf(filepath=str(out), export_format='GLB', use_selection=False)
-          print(f'EF_GLTF_EXPORTED={out}')
+          blend = Path.cwd() / 'art_source' / 'DS_LUMBER_2X4X8_A.blend'
+          glb = Path.cwd() / 'smoke_project' / 'DS_LUMBER_2X4X8_A.glb'
+          bpy.ops.wm.save_as_mainfile(filepath=str(blend))
+          bpy.ops.export_scene.gltf(filepath=str(glb), export_format='GLB', use_selection=False)
+          print('EF_OBJECT_DIMS_M', tuple(round(v, 6) for v in obj.dimensions))
+          print(f'EF_BLEND={blend}')
+          print(f'EF_GLTF={glb}')
           PY
-          .ef_tools/blender/blender-5.2.1-linux-x64/blender --background --factory-startup --python smoke/author_2x4.py | tee smoke/blender_author.log
-          test -s smoke/DS_LUMBER_2X4X8_A.glb
+          .ef_tools/blender/blender-5.2.1-linux-x64/blender --background --factory-startup --python art_source/author_2x4.py | tee art_source/blender_author.log
+          test -s art_source/DS_LUMBER_2X4X8_A.blend
+          test -s smoke_project/DS_LUMBER_2X4X8_A.glb
+          grep -q 'EF_OBJECT_DIMS_M (0.0381, 2.4384, 0.0889)' art_source/blender_author.log
 
-      - name: Godot import and boot smoke
+      - name: Godot import and boot smoke with fatal log gate
         shell: bash
         run: |
           set -euxo pipefail
-          cp smoke/DS_LUMBER_2X4X8_A.glb smoke/EF_2X4X8_ART.glb
-          cat > smoke/project.godot <<'EOF'
+          cat > smoke_project/project.godot <<'EOF'
           [application]
-          config/name="EF Cloud Toolchain Smoke"
+          config/name="EF Cloud Toolchain Smoke R1"
           run/main_scene="res://main.tscn"
           [display]
           window/size/viewport_width=640
@@ -99,17 +113,27 @@ jobs:
           renderer/rendering_method="gl_compatibility"
           renderer/rendering_method.mobile="gl_compatibility"
           EOF
-          cat > smoke/main.tscn <<'EOF'
+          cat > smoke_project/main.tscn <<'EOF'
           [gd_scene load_steps=2 format=3]
 
-          [ext_resource type="PackedScene" path="res://EF_2X4X8_ART.glb" id="1"]
+          [ext_resource type="PackedScene" path="res://DS_LUMBER_2X4X8_A.glb" id="1"]
 
           [node name="Main" type="Node3D"]
-
           [node name="Board" parent="." instance=ExtResource("1")]
           EOF
-          .ef_tools/godot/Godot_v4.7.2-stable_linux.x86_64 --headless --editor --path smoke --quit | tee smoke/godot_import.log
-          .ef_tools/godot/Godot_v4.7.2-stable_linux.x86_64 --headless --path smoke --quit-after 3 | tee smoke/godot_boot.log
+
+          GODOT_SILENCE_ROOT_WARNING=1 .ef_tools/godot/Godot_v4.7.2-stable_linux.x86_64 --headless --import --path smoke_project > smoke_project/godot_import.log 2>&1
+          GODOT_SILENCE_ROOT_WARNING=1 .ef_tools/godot/Godot_v4.7.2-stable_linux.x86_64 --headless --path smoke_project --quit-after 2 > smoke_project/godot_boot.log 2>&1
+
+          if grep -n 'ERROR:' smoke_project/godot_import.log; then
+            echo 'FAIL: Godot import log contains ERROR' >&2
+            exit 1
+          fi
+          if grep -n 'ERROR:' smoke_project/godot_boot.log; then
+            echo 'FAIL: Godot boot log contains ERROR' >&2
+            exit 1
+          fi
+          test -d smoke_project/.godot/imported
 
       - name: Build receipt
         shell: bash
@@ -117,28 +141,33 @@ jobs:
           set -euxo pipefail
           GODOT_SHA=$(sha256sum .ef_tools/godot/Godot_v4.7.2-stable_linux.x86_64.zip | awk '{print $1}')
           BLENDER_SHA=$(sha256sum .ef_tools/blender/blender-5.2.1-linux-x64.tar.xz | awk '{print $1}')
-          GLB_SHA=$(sha256sum smoke/DS_LUMBER_2X4X8_A.glb | awk '{print $1}')
+          GLB_SHA=$(sha256sum smoke_project/DS_LUMBER_2X4X8_A.glb | awk '{print $1}')
+          BLEND_SHA=$(sha256sum art_source/DS_LUMBER_2X4X8_A.blend | awk '{print $1}')
           {
-            echo 'ETHERFORGE CLOUD TOOLCHAIN R0'
+            echo 'ETHERFORGE CLOUD TOOLCHAIN R1'
             echo "godot_sha256=$GODOT_SHA"
             echo "blender_sha256=$BLENDER_SHA"
+            echo "blend_sha256=$BLEND_SHA"
             echo "glb_sha256=$GLB_SHA"
             echo 'godot=4.7.2-stable'
             echo 'blender=5.2.1-LTS'
             echo '2x4_actual_m=0.0381 x 0.0889 x 2.4384'
-            echo 'status=TOOLCHAIN_SMOKE_CANDIDATE_NOT_GAME_GREEN'
-          } | tee smoke/TOOLCHAIN_RECEIPT.txt
+            echo 'godot_import_error_count=0'
+            echo 'godot_boot_error_count=0'
+            echo 'status=CLOUD_TOOLCHAIN_EXECUTION_GREEN_GAME_VISUAL_GREEN_NOT_IMPLIED'
+          } | tee TOOLCHAIN_RECEIPT_R1.txt
 
       - name: Upload compact proof artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ef-toolchain-proof-r0
+          name: ef-toolchain-proof-r1
           path: |
-            smoke/DS_LUMBER_2X4X8_A.glb
-            smoke/TOOLCHAIN_RECEIPT.txt
-            smoke/blender_author.log
-            smoke/godot_import.log
-            smoke/godot_boot.log
+            art_source/DS_LUMBER_2X4X8_A.blend
+            art_source/blender_author.log
+            smoke_project/DS_LUMBER_2X4X8_A.glb
+            smoke_project/godot_import.log
+            smoke_project/godot_boot.log
+            TOOLCHAIN_RECEIPT_R1.txt
             .ef_tools/godot/godot_version.txt
             .ef_tools/blender/blender_version.txt
           retention-days: 7
@@ -146,7 +175,7 @@ jobs:
       - name: Upload portable toolchain archives
         uses: actions/upload-artifact@v4
         with:
-          name: ef-linux-toolchain-cache-r0
+          name: ef-linux-toolchain-cache-r1
           compression-level: 0
           path: |
             .ef_tools/godot/Godot_v4.7.2-stable_linux.x86_64.zip
