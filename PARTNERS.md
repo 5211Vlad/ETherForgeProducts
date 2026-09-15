@@ -1,6 +1,6 @@
 # EtherForge Partnership / Resource Brief
 
-EtherForge LLC is an Alabama-built software and applied AI R&D company. We ship narrow local-first utilities while developing longer-horizon AI continuity, robotics, perception, and fabrication systems.
+EtherForge is an Alabama-built software and applied AI R&D company. We ship narrow local-first utilities while developing longer-horizon AI continuity, robotics, perception, and fabrication systems.
 
 Public site: https://etherforge-works.netlify.app/
 
@@ -46,6 +46,6 @@ We do not use initial outreach to disclose source code, private GhostOS/MAGI int
 
 ## Contact
 
-EtherForge LLC  
+EtherForge  
 https://etherforge-works.netlify.app/  
 vladbloodbath123@gmail.com

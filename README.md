@@ -1,4 +1,4 @@
-# EtherForge LLC — Public Product Site
+# EtherForge — Public Product Site
 
 **Good, Honest Works.** Practical local-first software now; deeper AI systems research under measured validation.
 
