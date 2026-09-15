@@ -11,6 +11,37 @@
     const company=[...document.querySelectorAll('.footer-grid > div')].find(d=>{const b=d.querySelector('b');return b&&b.textContent.trim()==='COMPANY'});
     if(company){let email=[...company.querySelectorAll('a')].find(a=>a.textContent.trim().toLowerCase()==='contact'||a.textContent.trim().toLowerCase()==='email'||(a.getAttribute('href')||'').startsWith('mailto:'));if(email){email.href='contact.html';email.textContent='Contact';email.removeAttribute('target');email.removeAttribute('rel')}addLink(company,'Partners','partners.html',email||null);addLink(company,'GitHub','https://github.com/5211Vlad/ETherForgeProducts');addLink(company,'Instagram','https://www.instagram.com/vlad521118/');}
   }
+  function enforceCheckoutOnlyCatalog(){
+    const page=(location.pathname.split('/').pop()||'index.html').toLowerCase();
+    if(page==='index.html'||page==='products.html'){
+      document.querySelectorAll('.product-card').forEach(card=>{
+        const trigger=card.querySelector('[data-product]');
+        if(!trigger)return;
+        const p=product(trigger.dataset.product);
+        const payable=!!(p&&p.status==='live'&&/^https?:\/\//.test(p.url));
+        if(!payable)card.remove();
+      });
+    }
+    if(page==='products.html'){
+      const head=document.querySelector('.section-head');
+      if(head){
+        const eyebrow=head.querySelector('.eyebrow'); if(eyebrow)eyebrow.textContent='LIVE STORE · ACTIVE CHECKOUT ONLY';
+        const h=head.querySelector('h2'); if(h)h.textContent='Products you can buy right now.';
+        const p=head.querySelector(':scope > p'); if(p)p.textContent='Only products with a working checkout are shown in the store. Built, pilot, planned, and research-stage work stays off the sales shelf until it can actually be purchased.';
+      }
+    }
+    if(page==='index.html'){
+      const pile=[...document.querySelectorAll('.section-head')].find(h=>{const e=h.querySelector('.eyebrow');return e&&e.textContent.includes('PRODUCT PILE')});
+      if(pile){const p=pile.querySelector(':scope > p');if(p)p.textContent='The public store is intentionally small: only finished tools with active checkout stay on the shelf. Everything else remains R&D until it is actually ready to sell.'}
+    }
+    const productsFooter=[...document.querySelectorAll('.footer-grid > div')].find(d=>{const b=d.querySelector('b');return b&&b.textContent.trim()==='PRODUCTS'});
+    if(productsFooter){
+      productsFooter.querySelectorAll('a').forEach(a=>{
+        const href=(a.getAttribute('href')||'').toLowerCase();
+        if(!['rowglass.html','thread-junk-remover.html','products.html'].includes(href))a.remove();
+      });
+    }
+  }
   function polishPublicCopy(){
     const page=(location.pathname.split('/').pop()||'index.html').toLowerCase();
     if(page==='index.html'){
@@ -22,12 +53,6 @@
         if(actions[1]){actions[1].textContent='HIRE / CONTACT ETHERFORGE';actions[1].href='contact.html'}
         const notes=hero.querySelectorAll('.hero-note span');
         if(notes[2])notes[2].textContent='Clear validation status';
-      }
-      const sophia=[...document.querySelectorAll('.product-card')].find(c=>{const h=c.querySelector('h3');return h&&h.textContent.trim()==='SOPHIA 2.6'});
-      if(sophia){
-        const p=sophia.querySelector('h3 + p');
-        if(p)p.textContent='A private Windows companion for tarot reflection, lunar/symbolic timing, numerology, astrology, ritual planning, Ingredient Atlas study, self-reflection, and practice memory.';
-        sophia.querySelectorAll('.visual-pill').forEach(el=>{if(el.textContent.includes('Materia'))el.textContent=el.textContent.replace('Materia','Ingredient Atlas')});
       }
       const rnd=[...document.querySelectorAll('.card.rnd')].find(c=>{const e=c.querySelector('.eyebrow');return e&&e.textContent.includes('AVALON UNDER THE FLOORBOARDS')});
       if(rnd){
@@ -67,5 +92,5 @@
       }
     }
   }
-  document.addEventListener('DOMContentLoaded',()=>{setYear();polishPublicCopy();bindStore();enhanceNavigation();menu()});
+  document.addEventListener('DOMContentLoaded',()=>{setYear();polishPublicCopy();bindStore();enforceCheckoutOnlyCatalog();enhanceNavigation();menu()});
 })();
