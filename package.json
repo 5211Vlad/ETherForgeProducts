@@ -1,0 +1,17 @@
+{
+  "name": "etherforge-works-website",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Static EtherForge website with Stripe test-only checkout function",
+  "dependencies": {
+    "stripe": "^22.6.2"
+  },
+  "devDependencies": {
+    "@netlify/functions": "^4.0.0",
+    "typescript": "^5.9.0"
+  },
+  "scripts": {
+    "check": "tsc --noEmit",
+    "build": "node scripts/build-site.mjs"
+  }
+}
