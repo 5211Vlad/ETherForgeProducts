@@ -1,0 +1,13 @@
+# R11 RowGlass CSV export safety gate
+
+STATUS: DRAFT / RESEARCH HOLD. DO NOT MERGE, DEPLOY OR REPLACE GUMROAD CONTENT.
+
+The user-supplied `ROWGLASS_CUSTOMER_READY(2).zip` is now the byte-verified original reference (SHA-256 `7f164bbb6599cb10dc75568c202e8c84a836f2fb371e5e76f30e7b0e45c62602`), but the currently attached Gumroad purchaser ZIP hash remains unverified. The previously isolated R10 candidate repairs `__proto__` column loss and stale downloads. R11 additionally reproduces the risk of `=1+1` being exported unaltered in `modified_fields.csv`, which may be interpreted as a formula by spreadsheet software.
+
+New standalone lab candidate: `0.4.1-rc2`, SHA-256 `2745ac44a1e1d72cf47a59b11f834c4654bdf24080253a16c2ab265ff484b1f0`. It conservatively withholds entire affected CSV output files on formula-like or leading C0/C1 control cells, retains raw original values in HTML and JSON receipts, and emits a TXT safety notice listing suppressed filenames. Unaffected CSV files remain available. Legitimate negative values can be withheld; there is no silent normalization. Source files stay unchanged. This is scoped risk reduction, not certified safe spreadsheet import.
+
+Verified in current local Linux environment: **92/92 R11 scoped Chromium tests**; **61/61 unchanged R10 regression checks**; **22/22 full handoff manifest hashes and fresh ZIP extraction tests**; both embedded JS scripts passed Node syntax checks. Browser tests use `page.set_content`; no native Windows double-click or GitHub Windows CI run has yet occurred. The complete executable source, both unchanged baseline archives, tests, release gate, source files, and a non-enabled Ubuntu/Windows workflow template are in Drive, NOT yet copied to GitHub's source tree.
+
+Source of truth: https://drive.google.com/file/d/1F3cdr7uQYbk9g56r_GK6Fz5HaVsKhn8E/view ; R11 lab candidate: https://drive.google.com/file/d/1MOrN-Wal6X4xof2oOqcqv6cukcSe9SV8/view ; proof receipt: https://drive.google.com/file/d/15kPujO95tYSNSpQeBQcVkWRVd-qctD6_/view . Full handoff SHA-256 `018d468405c54d6bdcd1bd19d87d5f037da84b0124d56dd25c15c677a61daf3b`, downloaded Drive copy matched local byte-for-byte.
+
+Release gates: verify Gumroad-current attachment hash through owner-side download, commit exact candidate source and tests to reviewed branch and enable CI, run Windows-native file/download tests, review interoperability with Excel/LibreOffice and CSV parser edge cases, receive owner release sign-off. Project Defibrillator remains its own Windows security/usability workstream. Original archives, website, Gumroad product, main branch and master inventory unchanged.
