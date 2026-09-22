@@ -1,5 +1,6 @@
 window.ETHERFORGE_STORE = {
   products: {
+    project_defibrillator: {name:"Project Defibrillator 0.2.1", price:"$6.99+ on Gumroad", url:"https://vladbloodbath.gumroad.com/l/jtflsb", status:"live", cta:"Buy Project Defibrillator"},
     rowglass: {name:"RowGlass 2.2 RC3", price:"Live on Gumroad · RC3 update ready", url:"https://vladbloodbath.gumroad.com/l/ohhiz", status:"live", cta:"Buy RowGlass"},
     thread_junk_remover: {name:"Thread Junk Remover 2.2 RC3", price:"$9 current listing · RC3 update ready", url:"https://vladbloodbath.gumroad.com/l/zyxods", status:"live", cta:"Buy Thread Junk Remover"},
     csv_rescue_desk: {name:"CSV Rescue Desk 2.1 RC2", price:"$19 suggested", url:"mailto:vladbloodbath123@gmail.com?subject=CSV%20Rescue%20Desk%202.1%20RC2%20launch%20access", status:"launch", cta:"Launch access"},
