@@ -1,0 +1,26 @@
+name: Mack's R12 public harness ONLY (not product release QA)
+on:
+  pull_request:
+    paths:
+      - 'macks/release_gate/r12/**'
+      - '.github/workflows/macks-r12-public-harness.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  synthetic-harness-only:
+    name: R12 public harness ONLY ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test synthetic ZIP validation; never ingest paid source
+        run: python -m unittest discover -s macks/release_gate/r12/tests -v
+      - name: Verify HOLD metadata (NOT RowGlass app tests)
+        run: python macks/release_gate/r12/verify_private_archive.py --contract
