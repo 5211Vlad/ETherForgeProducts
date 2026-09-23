@@ -20,7 +20,8 @@ export default async (request: Request) => {
   }
   const prices: Record<string, string | undefined> = {
     "project-defibrillator": Netlify.env.get("STRIPE_PRICE_PROJECT_DEFIBRILLATOR"),
-    "thread-junk-remover": Netlify.env.get("STRIPE_PRICE_THREAD_JUNK_REMOVER")
+    "thread-junk-remover": Netlify.env.get("STRIPE_PRICE_THREAD_JUNK_REMOVER"),
+    "macks-bench-check": Netlify.env.get("STRIPE_PRICE_MACK_BENCH_CHECK")
   };
   if (!Object.prototype.hasOwnProperty.call(prices, sku)) {
     return Response.json({error: "Unknown product."}, {status: 400});
@@ -40,6 +41,7 @@ export default async (request: Request) => {
       automatic_tax: {enabled: false}, submit_type: "auto",
       customer_creation: "always", // Required by Stripe to offer saved payment methods.
       saved_payment_method_options: {payment_method_save: "enabled"},
+      metadata: {sku, environment: "test", fulfillment: "not-configured"},
       integration_identifier: "custom_embedded_web_0001",
       return_url: `${new URL(request.url).origin}/stripe-checkout-result.html?session_id={CHECKOUT_SESSION_ID}`
     });

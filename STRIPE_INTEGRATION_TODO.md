@@ -13,9 +13,12 @@ Files containing placeholder values: [.env.example](.env.example). No live or te
 | `STRIPE_CHECKOUT_ENABLED` | `false` | `true` only in an isolated sandbox preview after all test keys and prices are configured. |
 | `STRIPE_PRICE_PROJECT_DEFIBRILLATOR` | Verified test Price ID in example | `price_1UIb86J1WVzwfYnZQB4viYcB`, 699 USD cents, test only. |
 | `STRIPE_PRICE_THREAD_JUNK_REMOVER` | Verified test Price ID in example | `price_1UIb8cJ1WVzwfYnZBChBw8Wj`, 900 USD cents, test only. |
+| `STRIPE_PRICE_MACK_BENCH_CHECK` | Placeholder only | Create a Stripe sandbox one-time Price for $49.00 USD and store its `price_...` ID in Netlify. |
+| `STRIPE_WEBHOOK_ENABLED` | `false` | Set `true` only in isolated sandbox after the endpoint secret is configured. |
+| `STRIPE_WEBHOOK_SECRET` | `whsec_REPLACE_IN_NETLIFY_ONLY` | Stripe sandbox webhook signing secret for `/api/stripe-webhook`; Netlify Functions only. |
 | Live account, production prices, and fulfillment | Unavailable/not configured | Resolve separately. Test-only code rejects `sk_live_` and `pk_live_` intentionally. |
 
-`mode` is deliberately `payment`: these two digital downloads are one-time purchases, not subscriptions. Test `line_items` use real verified Stripe sandbox Price IDs via Netlify environment variables, not client-provided amounts. The Stripe connector currently exposes only a sandbox. A production build needs a separate reviewed change, not just swapping keys.
+`mode` is deliberately `payment`: the digital downloads and Mack's Bench Check are one-time purchases/services, not subscriptions. Test `line_items` use server-controlled Stripe sandbox Price IDs via Netlify environment variables, never browser-provided amounts. The Stripe connector currently exposes only a sandbox. A production build needs a separate reviewed change, not just swapping keys.
 
 ## Configured Parameters
 
@@ -41,7 +44,7 @@ Client implementation in [stripe-checkout.html](stripe-checkout.html) and [strip
 ## Setup and next steps
 
 1. Run `npm ci` and `npm run check` in this repository; `npm run check` typechecks the Netlify function. Run `node --check stripe-checkout.js` for browser JS syntax. Keep `.netlify/`, `.env` and `node_modules/` ignored.
-2. In the existing Netlify project `etherforge-works`, set the five variables above under environment variables. Scope secrets to Functions if supported. Use sandbox test keys ONLY, and do not enable checkout in the production context. Netlify Functions use `Netlify.env.get()`.
+2. In the existing Netlify project `etherforge-works`, set the required sandbox variables above under environment variables. Scope secrets to Functions if supported. Use sandbox test keys ONLY, and do not enable checkout or webhooks in the production context. Netlify Functions use `Netlify.env.get()`.
 3. Start locally with `npx netlify dev` after configuring a private, ignored local environment. Alternatively build a password-protected staging branch deploy. Open `/stripe-checkout.html?sku=project-defibrillator` and `/stripe-checkout.html?sku=thread-junk-remover` on the staging origin only. These pages are not linked from the public product catalog.
 4. Use Stripe TEST cards: `4242 4242 4242 4242` for an approved test, `4000 0025 0000 3155` for 3-D Secure, `4000 0000 0000 9995` for a declined test. Use future expiration and arbitrary CVC; never real card data in sandbox. Verify the transaction in Stripe's test Dashboard. No test card was charged by this coding pass.
 5. Verify the `2026-03-25.dahlia` preview API version and beta flag are enabled in your Stripe account. The connector's API uses a different preview version, so its API-level success does not prove this exact deployed SDK flow works.
@@ -59,3 +62,15 @@ References: https://docs.stripe.com/checkout/form/quickstart ; https://docs.stri
 Because the site formerly published the repository root (`publish = "."`), adding npm dependencies or environment files would risk publishing source/configuration. [netlify.toml](netlify.toml) now runs `npm run build` and publishes only `dist/`; [scripts/build-site.mjs](scripts/build-site.mjs) copies an explicit allowlist of public static site files and assets. The build audit confirmed all 28 HTML pages' local linked assets resolve and source, `.env`, dependencies, serverless files, and TODO do not appear in `dist/`. The Netlify Functions source is independently bundled by Netlify and is never a client download.
 
 **Verification receipts:** `npm run build` PASS, `npm run check` PASS, `node --check stripe-checkout.js` PASS, mocked endpoint tests PASS (method, default-off, environment guards, SKU and price validation), static publish audit PASS. Stripe's sandbox API accepted the configured session parameters only after adding `customer_creation: "always"`; it created an unpaid test session. No completed checkout, rendered iframe browser test, webhook fulfillment, live access, or production deploy is verified. Do not present static/API tests as buyer delivery proof.
+
+## Webhook staging status
+
+Added [netlify/functions/stripe-webhook.mts](netlify/functions/stripe-webhook.mts) as a sandbox-only Stripe webhook receiver at `/api/stripe-webhook`. It reads the raw request body, verifies the `stripe-signature` header with `STRIPE_WEBHOOK_SECRET`, and only then inspects Checkout Session events.
+
+Handled events: `checkout.session.completed`, `checkout.session.async_payment_succeeded`, and `checkout.session.async_payment_failed`. Successful events emit a safe structured receipt to server logs containing Checkout Session ID, deterministic Mack ticket ID, SKU metadata, customer email if supplied by Stripe, amount, currency, payment status, and intake status. Fulfillment remains explicitly `NOT_CONFIGURED`.
+
+The Checkout Session creator now attaches server-controlled metadata `{sku, environment: "test", fulfillment: "not-configured"}` and allowlists a future `macks-bench-check` SKU. The $49 Mack sandbox Price ID is still missing, so that SKU correctly remains unavailable until configured.
+
+Local synthetic webhook verification passed: a correctly signed test event returned HTTP 200 and an invalid signature returned HTTP 400. This test proves signature handling and safe field extraction only. No real Stripe webhook endpoint, completed payment, durable receipt storage, customer file intake, or fulfillment has been verified.
+
+Before deployment, create the sandbox webhook endpoint in Stripe pointing to the staging Netlify origin plus `/api/stripe-webhook`, subscribe only to the required Checkout Session events, copy the resulting `whsec_...` value into Netlify, and then enable `STRIPE_WEBHOOK_ENABLED=true` in that isolated sandbox context.
