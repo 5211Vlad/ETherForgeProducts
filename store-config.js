@@ -1,6 +1,6 @@
 window.ETHERFORGE_STORE = {
   products: {
-    macks_bench_check: {name:"Mack's Modules Bench Check", price:"$49 one-time diagnostic", url:"https://book.stripe.com/cNi4gA4nm8CP6ZpbxP2B203", status:"live", cta:"Book Bench Check"},
+    macks_bench_check: {name:"Mack's Modules Bench Check", price:"$19.99 introductory diagnostic", url:"https://book.stripe.com/fZucN6g648CP6Zp6dv2B204", status:"live", cta:"Book Bench Check · $19.99"},
     rowglass: {name:"RowGlass 2.2 RC3", price:"Live on Gumroad · RC3 update ready", url:"https://vladbloodbath.gumroad.com/l/ohhiz", status:"live", cta:"Buy RowGlass"},
     thread_junk_remover: {name:"Thread Junk Remover 2.2 RC3", price:"$9 current listing · RC3 update ready", url:"https://vladbloodbath.gumroad.com/l/zyxods", status:"live", cta:"Buy Thread Junk Remover"},
     csv_rescue_desk: {name:"CSV Rescue Desk 2.1 RC2", price:"$19 suggested", url:"mailto:vladbloodbath123@gmail.com?subject=CSV%20Rescue%20Desk%202.1%20RC2%20launch%20access", status:"launch", cta:"Launch access"},
