@@ -1,1 +1,44 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="CSV Rescue Desk 2.1 RC2 repairs common CSV structure problems locally with delimiter detection, duplicate-header repair, row-width warnings, deterministic cleanup, and demo-first onboarding."><title>CSV Rescue Desk 2.1 RC2 — EtherForge</title><link rel="icon" href="assets/etherforge-logo.png"><link rel="stylesheet" href="styles.css"><script defer src="store-config.js"></script><script defer src="app.js"></script></head><body><a class="skip" href="#content">Skip to content</a><header class="site-header"><div class="shell nav"><a class="brand" href="index.html"><img src="assets/etherforge-logo.png" alt="EtherForge"><span><b>ETHERFORGE</b><small>GOOD, HONEST WORKS.</small></span></a><nav class="nav-links"><a href="products.html">Products</a><a href="projects.html">Projects</a><a href="proof.html">Proof</a><a href="about.html">About</a></nav></div></header><main id="content"><div class="shell"><section class="product-hero"><div><div class="eyebrow">LOCAL CSV REPAIR · RC2</div><h1>Repair the ugly export. Keep the original.</h1><p>CSV Rescue Desk 2.1 RC2 detects common delimiters, repairs duplicate headers deterministically, trims cells, removes blank/exact duplicate rows, normalizes email case, and flags uneven row widths instead of silently hiding them.</p><div class="hero-actions"><a class="button" data-product="csv_rescue_desk" href="#">Launch access</a><a class="button secondary" href="products.html">Back to products</a></div><div class="product-price">$19 suggested</div><div class="hero-note"><span>Hardened RC2 · not customer-proven</span><span>Local-first</span></div></div><div class="product-panel"><div class="eyebrow">CURRENT HARDENING</div><div class="window"><div class="window-body"><div class="logline"><span>quoted multiline fields</span><b class="ok">TESTED</b></div><div class="logline"><span>uneven row width</span><b class="warn">REPORT</b></div><div class="logline"><span>10k synthetic rows</span><b class="ok">PASS</b></div><div class="logline"><span>source overwrite</span><b class="ok">NO</b></div></div></div></div></section></div><section class="section"><div class="shell"><div class="split"><div class="card"><div class="eyebrow">USE IT FOR</div><h3>Preflight before CRM, store, form, or spreadsheet imports.</h3><p>Run the demo, inspect the QA report, then use a copy of your real CSV and export a repaired file.</p></div><div class="card"><div class="eyebrow">BOUNDARY</div><h3>Structural rescue, not semantic guessing.</h3><p>It does not infer missing business meaning or guarantee that a third-party importer will accept every schema.</p></div></div></div></section></main><footer class="site-footer"><div class="shell"><div class="legal-note"><span>© <span data-year></span> EtherForge.</span><span>RC2 means hardened release candidate, not customer validation.</span></div></div></footer></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="CSV Rescue Desk 2.1 RC2 repairs common CSV structure problems locally while preserving the source and producing a QA report.">
+<title>CSV Rescue Desk 2.1 RC2 — EtherForge</title>
+<link rel="icon" href="assets/etherforge-logo.png"><link rel="stylesheet" href="styles.css">
+<script defer src="store-config.js"></script><script defer src="app.js"></script>
+</head>
+<body>
+<a class="skip" href="#content">Skip to content</a>
+<header class="site-header"><div class="shell nav"><a class="brand" href="index.html"><img src="assets/etherforge-logo.png" alt="EtherForge"><span><b>ETHERFORGE</b><small>GOOD, HONEST WORKS.</small></span></a><button class="menu-btn" aria-label="Toggle navigation" aria-expanded="false">MENU</button><nav class="nav-links"><a href="products.html">Products</a><a href="macks-modules.html">Mack's Modules</a><a href="proof.html">Proof</a><a href="about.html">About</a></nav></div></header>
+<main id="content">
+<div class="shell"><section class="product-hero">
+<div><div class="eyebrow">CSV RESCUE DESK 2.1 RC2 · LOCAL-FIRST</div>
+<h1>Clean the file without touching the source.</h1>
+<p>CSV Rescue Desk fixes common structural mess before a CRM, store, form, or spreadsheet import. It works on a copy, preserves the original, and produces visible QA evidence instead of silently guessing what your data meant.</p>
+<div class="hero-actions"><a class="button" data-product="csv_rescue_desk" href="#">Request launch access</a><a class="button secondary" href="#proof">See what it checks</a></div>
+<div class="product-price">$19 suggested · one-time when checkout opens</div>
+<div class="hero-note"><span>Hardened RC2</span><span>Local processing</span><span>Customer validation pending</span></div>
+</div>
+<div class="product-panel"><div class="eyebrow">THE JOB</div><div class="window"><div class="window-body">
+<div class="logline"><span>delimiter detection</span><b class="ok">CHECK</b></div>
+<div class="logline"><span>duplicate headers</span><b class="ok">REPAIR</b></div>
+<div class="logline"><span>blank / exact duplicate rows</span><b class="ok">CLEAN</b></div>
+<div class="logline"><span>uneven row widths</span><b class="warn">REPORT</b></div>
+<div class="logline"><span>source overwrite</span><b class="ok">NO</b></div>
+</div></div></div>
+</section></div><section class="section" id="proof"><div class="shell">
+<div class="section-head"><div><div class="eyebrow">WHY IT EXISTS</div><h2>Imports fail in boring places.</h2></div><p>CSV Rescue Desk is for the gap between “I exported a CSV” and “I trust this file enough to import it somewhere important.”</p></div>
+<div class="grid three">
+<article class="card"><div class="tag">01 · PREFLIGHT</div><h3>Spot structural trouble early.</h3><p>Detect common delimiters, duplicate headers, blank rows, exact duplicate rows, and uneven row widths before the next system touches the file.</p></article>
+<article class="card"><div class="tag">02 · REPAIR</div><h3>Apply deterministic cleanup.</h3><p>Trim cells, normalize email case, repair duplicate headers deterministically, and write a cleaned copy rather than mutating the source.</p></article>
+<article class="card"><div class="tag">03 · RECEIPT</div><h3>Review what happened.</h3><p>Use the QA output to see what the tool changed or flagged. The goal is inspectable cleanup, not a magic “trust me” button.</p></article>
+</div></div></section>
+<section class="section"><div class="shell"><div class="split">
+<div class="card"><div class="eyebrow">CURRENT INTERNAL EVIDENCE</div><h3>RC2 hardening, not market proof.</h3><p>Current EtherForge validation includes quoted multiline-field testing, uneven-row reporting, a 10k-row synthetic run, and source-preservation checks. These are internal engineering results, not external customer validation.</p></div>
+<div class="card"><div class="eyebrow">BOUNDARY</div><h3>Structural rescue, not business inference.</h3><p>CSV Rescue Desk does not invent missing values, infer business meaning, guarantee acceptance by every third-party importer, or replace a database migration plan.</p></div>
+</div>
+<div class="callout"><div class="eyebrow">GOOD, HONEST DATA WORK</div><h2>Repair what can be repaired.<br>Flag what needs a human.</h2><p>That is the entire point of the product.</p><div class="hero-actions"><a class="button" data-product="csv_rescue_desk" href="#">Request launch access</a><a class="button secondary" href="macks-modules.html">Need help now? Book Mack's Bench Check</a></div></div>
+</div></section>
+</main>
+<footer class="site-footer"><div class="shell"><div class="legal-note"><span>© <span data-year></span> EtherForge.</span><span>RC2 means hardened release candidate. External customer validation remains pending.</span></div></div></footer>
+</body></html>
