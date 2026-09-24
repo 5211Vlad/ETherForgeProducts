@@ -1,0 +1,16 @@
+{
+  "stage": "R12",
+  "status": "RESEARCH_HOLD",
+  "public_ci_scope": "HARNESS_AND_METADATA_ONLY_NOT_ROWGLASS_PRODUCT_QA",
+  "private_archive_basename": "macks_r11_rowglass_release_guard_handoff.zip",
+  "private_archive_sha256": "018d468405c54d6bdcd1bd19d87d5f037da84b0124d56dd25c15c677a61daf3b",
+  "manifest_path": "macks_r11/SHA256_MANIFEST.json",
+  "expected_manifest_payload_count": 22,
+  "expected_candidate_sha256": "2745ac44a1e1d72cf47a59b11f834c4654bdf24080253a16c2ab265ff484b1f0",
+  "expected_original_sha256": "7f164bbb6599cb10dc75568c202e8c84a836f2fb371e5e76f30e7b0e45c62602",
+  "local_browser_test": "macks_r11/tests/test_r11.py",
+  "expected_browser_receipt": "TOTAL 92 PASS 92 FAIL 0",
+  "windows_native_double_click": "NOT_TESTED",
+  "gumroad_live_attachment": "NOT_VERIFIED",
+  "github_public_branch_contains_paid_product": false
+}
